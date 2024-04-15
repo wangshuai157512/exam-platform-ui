@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <meta name="renderer" content="webkit" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <!-- <link rel="icon" href="<%= BASE_URL %>favicon.ico" /> -->
+    <title>预警</title>
+
+    <style>
+      body,
+      html {
+        margin: 0;
+        background: white;
+        padding: 12px;
+        box-sizing: border-box;
+      }
+      .jaya-row {
+        display: flex;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        line-height: 32px;
+      }
+      label {
+        font-size: 14px;
+      }
+      p {
+        width: 194px;
+        height: 32px;
+        border-radius: 4px;
+        display: inline-block;
+        margin: 0;
+        box-sizing: border-box;
+        border: 1px solid #70787c;
+        line-height: 32px;
+        color: #606266;
+        background-color: #f5f7fa;
+        border-color: #dfe4ed;
+        text-align: center;
+      }
+      input {
+        width: 194px;
+        height: 32px;
+        border-radius: 4px;
+        border: 1px solid #70787c;
+        padding: 0;
+      }
+      button {
+        background-color: #409eff;
+        line-height: 1;
+        white-space: nowrap;
+        cursor: pointer;
+        border: 1px solid #dcdfe6;
+        color: #fff;
+        -webkit-appearance: none;
+        text-align: center;
+        box-sizing: border-box;
+        outline: none;
+        margin: 0;
+        transition: 0.1s;
+        font-weight: 500;
+        padding: 10px 18px;
+        font-size: 14px;
+        border-radius: 4px;
+        float: right;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <div style="width: 280px; margin: auto">
+        <div class="jaya-row">
+          <label for="">考场简称：</label>
+          <p id="kcjc"></p>
+        </div>
+        <div class="jaya-row">
+          <label for="">考车号牌：</label>
+          <p id="kchp"></p>
+        </div>
+        <div class="jaya-row">
+          <label for="">预警分类：</label>
+          <p>考试过程</p>
+        </div>
+        <div class="jaya-row">
+          <label for="">预警信息：</label>
+          <input autocomplete="off" id="input" type="text" />
+        </div>
+        <button
+          style="background-color: whitesmoke; color: black; margin-left: 15px"
+          onclick="cancel()"
+        >
+          取消
+        </button>
+        <button onclick="handleClick()">保存</button>
+      </div>
+    </div>
+    <script>
+      function getUrlVars(url) {
+        var hash;
+        var myJson = {};
+        var hashes = url.slice(url.indexOf("?") + 1).split("&");
+        for (var i = 0; i < hashes.length; i++) {
+          hash = hashes[i].split("=");
+          myJson[hash[0]] = hash[1];
+        }
+        return myJson;
+      }
+      var param = getUrlVars(location.href);
+
+      function handleClick() {
+        window.parent.postMessage(
+          JSON.stringify({
+            yjxx: document.getElementById("input").value,
+            id: param.id,
+          }),
+          top.location.href
+        );
+      }
+
+      function cancel() {
+        window.parent.postMessage(
+          JSON.stringify({
+            isClose: true,
+            id: param.id,
+          }),
+          top.location.href
+        );
+      }
+
+      document.getElementById("kchp").innerHTML = decodeURI(param.kchp);
+      document.getElementById("kcjc").innerHTML = decodeURI(param.kcjc);
+    </script>
+  </body>
+</html>
